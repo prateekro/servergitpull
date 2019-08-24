@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
+const { execSync } = require('child_process'); //https://stackoverflow.com/questions/20643470/execute-a-command-line-binary-with-node-js
 
 //Allow all requests from all domains & localhost
 app.all('/*', function(req, res, next) {
@@ -48,5 +49,12 @@ app.post('/ingredients', function(req, res) {
 app.get('/pullrcc', function(req, res) {
     res.status(200).send("Trying to pull it Sir!")
 });
+
+app.get('/execgitpull', function(req, res) {
+    // stderr is sent to stderr of parent process
+    // you can set options.stdio if you want it to go elsewhere
+    let stdout = execSync('ls');
+    res.status(200).send("Executed! Please check.")
+})
 
 app.listen(6069);
